@@ -1,3 +1,4 @@
+using ImageProcessing.Core;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ImageProcessingService.Controllers
@@ -21,6 +22,11 @@ namespace ImageProcessingService.Controllers
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
+
+            var sampleTest = new SampleTest();
+            sampleTest.sample1();
+             
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
