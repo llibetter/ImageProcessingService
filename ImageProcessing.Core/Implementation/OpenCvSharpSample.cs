@@ -1,15 +1,31 @@
-﻿using OpenCvSharp;
+﻿using ImageProcessing.Core.Interface;
+using OpenCvSharp;
 
-namespace ImageProcessing.Core.OpenCvSharp
+namespace ImageProcessing.Core.Implementation
 {
-    public class SampleTest
+    public class OpenCvSharpSample : IImageLibFunc
     {
+        public Stream FormatConvert(Stream srcStream, string targetFormat, float scale)
+        {
+            return FormatConvert(srcStream, targetFormat, scale, scale);
+        }
+
+        public Stream FormatConvert(Stream srcStream, string targetFormat, float hScale, float vScale)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Stream FormatConvert(Stream srcStream, string targetFormat, int wight, int height)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Sample1()
         {
             using var src = new Mat("lenna.png", ImreadModes.Color);
             using var dst = new Mat();
 
-            Cv2.Resize(src, dst, new Size(1000,1000));
+            Cv2.Resize(src, dst, new Size(1000, 1000));
             dst.ImWrite("lenna_opencvsharp.png");
         }
 
