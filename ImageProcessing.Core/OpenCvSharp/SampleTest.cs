@@ -1,11 +1,19 @@
 ﻿using OpenCvSharp;
-using System;
 
-namespace ImageProcessing.Core
+namespace ImageProcessing.Core.OpenCvSharp
 {
     public class SampleTest
     {
-        public  void sample1()
+        public void Sample1()
+        {
+            using var src = new Mat("lenna.png", ImreadModes.Color);
+            using var dst = new Mat();
+
+            Cv2.Resize(src, dst, new Size(1000,1000));
+            dst.ImWrite("lenna_opencvsharp.png");
+        }
+
+        public void Sample2()
         {
             using var src = new Mat("lenna.png", ImreadModes.Grayscale);
             using var dst = new Mat();
@@ -18,7 +26,7 @@ namespace ImageProcessing.Core
             }
         }
 
-        public void sample2()
+        public void Sample3()
         {
             using (var t = new ResourcesTracker())
             {

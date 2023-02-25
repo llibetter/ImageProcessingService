@@ -2,6 +2,7 @@
 
 #FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 FROM ghcr.io/shimat/opencvsharp/ubuntu20-dotnet6-opencv4.6.0:20220615 AS base
+#FROM  ghcr.io/shimat/opencvsharp/ubuntu20-dotnet6sdk-opencv4.6.0:20220615 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
