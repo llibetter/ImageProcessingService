@@ -1,6 +1,6 @@
 ﻿namespace ImageProcessing.Core.Interface
 {
-    internal interface IImageLibFunc
+    public interface IImageLibFunc
     {
         void Sample1();
         Stream FormatConvert(Stream srcStream, string targetFormat, float scale);

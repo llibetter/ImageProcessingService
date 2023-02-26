@@ -1,5 +1,6 @@
 using ImageProcessing.Core;
 using ImageProcessing.Core.Implementation;
+using ImageProcessing.Core.Interface;
 using ImageProcessing.Core.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -22,6 +23,10 @@ namespace ImageProcessingService.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// 随机天气
+        /// </summary>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {
@@ -34,7 +39,11 @@ namespace ImageProcessingService.Controllers
             .ToArray();
         }
 
-
+        
+        /// <summary>
+        /// 图像库使用demo
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("[action]")]
         public IActionResult GetSample()
         {
@@ -58,27 +67,42 @@ namespace ImageProcessingService.Controllers
             var sampleTest = new OpenCvSharpSample();
             sampleTest.Sample1();
 
-            return Ok();
+            return Ok(new { success = true });
         }
 
+        /// <summary>
+        /// 格式转换+缩放
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("[action]")]
         public IActionResult GetFormatConvert()
         {
             Trace.WriteLine("hello");
 
-            var sampleTest4 = new NetVipsSample();
             using var srcStream = FileUtils.LocalFile2Stream("lenna.png");
-            foreach (var targetFormat in new MyImageFormat[] {  
-                MyImageFormat.Tiff, MyImageFormat.Webp,
-                //MyImageFormat.Bmp, 
-                MyImageFormat.Jpeg, MyImageFormat.Png
-                })
+            foreach (var currentLibs in new Type[] { typeof(NetVipsSample), typeof(ImageSharpSample)})
             {
-                using var resStream = sampleTest4.FormatConvert(srcStream, targetFormat.ToString(), 0.5f);
-                FileUtils.Stream2LocalFile(resStream,
-                    $"./Output/lenna_netvips_formatconvert{CommonUtils.GetExtensionWithDot(targetFormat)}");
+                var sampleTest = Activator.CreateInstance(currentLibs) as IImageLibFunc; 
+
+                foreach (var targetFormat in new MyImageFormat[] {
+                    MyImageFormat.Tiff, MyImageFormat.Webp,
+                    MyImageFormat.Bmp, MyImageFormat.Jpeg, MyImageFormat.Png})
+                {
+                    try
+                    {
+                        using var resStream = sampleTest.FormatConvert(srcStream, targetFormat.ToString(), 0.5f);
+                        FileUtils.Stream2LocalFile(resStream,
+                            $"./Output/lenna_{sampleTest.GetType().Name}_formatconvert{CommonUtils.GetExtensionWithDot(targetFormat)}");
+
+                    }
+                    catch(Exception ex)
+                    {
+                        Trace.WriteLine(ex.ToString());
+                    }
+                }
             }
-            return Ok();
+
+            return Ok(new { success=true});
         }
     }
 }

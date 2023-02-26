@@ -59,7 +59,7 @@ namespace ImageProcessing.Core.Implementation
                     vOption.Add(NetVipsVOptionKey.compression, 1);
                 }
                 using var resImage = reSizeImage.Copy();
-                //不支持.bmp.TODO
+                //NetVips不支持.bmp.TODO
                 resImage.WriteToStream(stream, CommonUtils.GetExtensionWithDot(realTargetFormat), vOption);
                 stream.Position = 0;
                 return stream;
