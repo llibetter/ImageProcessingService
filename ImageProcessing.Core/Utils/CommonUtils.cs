@@ -1,4 +1,6 @@
-﻿namespace ImageProcessing.Core.Utils
+﻿using ImageMagick;
+
+namespace ImageProcessing.Core.Utils
 {
     public class NetVipsVOptionKey
     {
@@ -44,6 +46,20 @@
             };
 
             return res;
+        }
+
+        public static MagickFormat GetMagicFormatByMyImageFormat(MyImageFormat myImageFormat)
+        {
+            return myImageFormat switch { 
+                MyImageFormat.Svg=> MagickFormat.Svg,
+                MyImageFormat.Ai=>MagickFormat.Ai,
+                MyImageFormat.Png=>MagickFormat.Png32,
+                MyImageFormat.Tiff=>MagickFormat.Tiff,
+                MyImageFormat.Webp=>MagickFormat.WebP,
+                MyImageFormat.Jpeg=>MagickFormat.Jpeg,
+                MyImageFormat.Bmp=>MagickFormat.Bmp,
+                _=>throw new Exception(),
+            };
         }
 
         public static string GetExtensionWithDot(MyImageFormat myImageFormat)
