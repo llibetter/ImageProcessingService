@@ -1,4 +1,5 @@
 ﻿using ImageProcessing.Core.Interface;
+using ImageProcessing.Core.Utils;
 using OpenCvSharp;
 
 namespace ImageProcessing.Core.Implementation
@@ -12,12 +13,34 @@ namespace ImageProcessing.Core.Implementation
 
         public Stream FormatConvert(Stream srcStream, string targetFormat, float hScale, float vScale)
         {
-            throw new NotImplementedException();
+            if (srcStream == null || srcStream.Length == 0)
+                throw new Exception();
+            srcStream.Position = 0;
+            using var src = Mat.FromStream(srcStream, ImreadModes.Color);
+            using var dst = new Mat();
+
+            Cv2.Resize(src, dst, new Size(src.Width*hScale, src.Height*vScale));
+            var myImageFormat = CommonUtils.GetMyImageFormat(targetFormat);
+            var res = new MemoryStream();
+            dst.WriteToStream(res, ext: CommonUtils.GetExtensionWithDot(myImageFormat));
+            res.Position = 0;
+            return res;
         }
 
         public Stream FormatConvert(Stream srcStream, string targetFormat, int wight, int height)
         {
-            throw new NotImplementedException();
+            if (srcStream == null || srcStream.Length == 0)
+                throw new Exception();
+            srcStream.Position = 0;
+            using var src = Mat.FromStream(srcStream, ImreadModes.Color);
+            using var dst = new Mat();
+
+            Cv2.Resize(src, dst, new Size(wight, height));
+            var myImageFormat = CommonUtils.GetMyImageFormat(targetFormat);
+            var res = new MemoryStream();
+            dst.WriteToStream(res,ext:CommonUtils.GetExtensionWithDot(myImageFormat));
+            res.Position = 0;
+            return res;
         }
 
         public void Sample1()
