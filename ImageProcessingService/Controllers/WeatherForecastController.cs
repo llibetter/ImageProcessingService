@@ -81,7 +81,7 @@ namespace ImageProcessingService.Controllers
 
             using var srcStream = FileUtils.LocalFile2Stream("lenna.png");
             foreach (var currentLibs in new Type[] { typeof(NetVipsSample), typeof(ImageSharpSample),
-                typeof(Magic_NetSample), typeof(OpenCvSharpSample) })
+                typeof(Magic_NetSample), typeof(OpenCvSharpSample), typeof(SkiaSharpSample) })
             {
                 var sampleTest = Activator.CreateInstance(currentLibs) as IImageLibFunc; 
 

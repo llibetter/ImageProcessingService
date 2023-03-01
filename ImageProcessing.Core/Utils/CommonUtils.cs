@@ -1,4 +1,5 @@
 ﻿using ImageMagick;
+using SkiaSharp;
 
 namespace ImageProcessing.Core.Utils
 {
@@ -62,6 +63,17 @@ namespace ImageProcessing.Core.Utils
             };
         }
 
+        public static SKEncodedImageFormat GetSkiaFormatByMyImageFormat(MyImageFormat myImageFormat)
+        {
+            //不支持tiff
+            return myImageFormat switch {
+                MyImageFormat.Png => SKEncodedImageFormat.Png,
+                MyImageFormat.Webp => SKEncodedImageFormat.Webp,
+                MyImageFormat.Jpeg => SKEncodedImageFormat.Jpeg,
+                MyImageFormat.Bmp => SKEncodedImageFormat.Bmp,
+                _ => throw new Exception(),
+            };
+        }
         public static string GetExtensionWithDot(MyImageFormat myImageFormat)
         {
             if (myImageFormat == MyImageFormat.Undefined)

@@ -1,4 +1,5 @@
 ﻿using ImageProcessing.Core.Interface;
+using ImageProcessing.Core.Utils;
 using SkiaSharp;
 
 namespace ImageProcessing.Core.Implementation
@@ -12,12 +13,40 @@ namespace ImageProcessing.Core.Implementation
 
         public Stream FormatConvert(Stream srcStream, string targetFormat, float hScale, float vScale)
         {
-            throw new NotImplementedException();
+            if (srcStream == null || srcStream.Length == 0)
+                throw new ArgumentException();
+
+            srcStream.Seek(0, SeekOrigin.Begin);
+            using var inputStream = new SKManagedStream(srcStream);
+            using var original = SKBitmap.Decode(inputStream);
+            using var resized = original.Resize(new SKImageInfo((int)(original.Width*hScale), (int)(original.Height*vScale)), 
+                SKFilterQuality.High);
+            using var image = SKImage.FromBitmap(resized);
+
+            var res = new MemoryStream();
+            var myImageFormat = CommonUtils.GetMyImageFormat(targetFormat);
+            //bmp Encode结果为null
+            image.Encode(CommonUtils.GetSkiaFormatByMyImageFormat(myImageFormat), 100).SaveTo(res);
+            res.Seek(0, SeekOrigin.Begin);
+            return res;
         }
 
         public Stream FormatConvert(Stream srcStream, string targetFormat, int wight, int height)
         {
-            throw new NotImplementedException();
+            if (srcStream == null || srcStream.Length == 0)
+                throw new ArgumentException();
+
+            srcStream.Seek(0, SeekOrigin.Begin);
+            using var inputStream = new SKManagedStream(srcStream);
+            using var original = SKBitmap.Decode(inputStream);
+            using var resized = original.Resize(new SKImageInfo(wight, height), SKFilterQuality.High);
+            using var image = SKImage.FromBitmap(resized);
+
+            var res = new MemoryStream();
+            var myImageFormat = CommonUtils.GetMyImageFormat(targetFormat);
+            image.Encode(CommonUtils.GetSkiaFormatByMyImageFormat(myImageFormat), 100).SaveTo(res);
+            res.Seek(0, SeekOrigin.Begin);
+            return res;
         }
 
         public void Sample1()
