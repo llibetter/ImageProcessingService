@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="12.3.0" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="13.3.0" />
     <PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.0-preview.1.7762" />
     <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="8.0.0-preview.1.7762" />
     <PackageReference Include="NetVips" Version="2.2.0" />
